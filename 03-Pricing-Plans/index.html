@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing Plans</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 50px 20px;
+    font-family: Arial, sans-serif;
+    background: #f1f5ff;
+    color: #17213b;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 38px;
+}
+
+.subtitle {
+    color: #777;
+}
+
+.toggle {
+    margin: 25px 0 35px;
+}
+
+.toggle button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: #dce3f5;
+    color: #26365b;
+}
+
+.toggle button.active {
+    background: #5368df;
+    color: white;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px #0001;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px #0002;
+}
+
+.card h2 {
+    color: #5368df;
+}
+
+.price {
+    font-size: 38px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.card ul {
+    list-style: none;
+    padding: 0;
+    line-height: 2.5;
+    color: #555;
+}
+
+.card a {
+    display: block;
+    background: #5368df;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+@media(max-width: 750px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+<h1>Choose Your Plan</h1>
+<p class="subtitle">Simple pricing for everyone</p>
+
+<div class="toggle">
+    <button id="monthly" class="active">Monthly</button>
+    <button id="yearly">Yearly</button>
+</div>
+
+<section class="cards">
+
+<div class="card">
+    <h2>Basic</h2>
+    <div class="price" data-month="0" data-year="0">₹0</div>
+    <p>For beginners</p>
+    <ul>
+        <li>Basic Features</li>
+        <li>1 Project</li>
+        <li>Email Support</li>
+    </ul>
+    <a href="#">Get Started</a>
+</div>
+
+<div class="card">
+    <h2>Pro</h2>
+    <div class="price" data-month="499" data-year="399">₹499</div>
+    <p>For professionals</p>
+    <ul>
+        <li>All Basic Features</li>
+        <li>Unlimited Projects</li>
+        <li>Priority Support</li>
+    </ul>
+    <a href="#">Choose Pro</a>
+</div>
+
+<div class="card">
+    <h2>Premium</h2>
+    <div class="price" data-month="999" data-year="799">₹999</div>
+    <p>For businesses</p>
+    <ul>
+        <li>All Pro Features</li>
+        <li>Team Access</li>
+        <li>24/7 Support</li>
+    </ul>
+    <a href="#">Choose Premium</a>
+</div>
+
+</section>
+</main>
+
+<script>
+
+const monthly = document.getElementById("monthly");
+const yearly = document.getElementById("yearly");
+
+function changePricing(isYearly) {
+
+    const prices = document.querySelectorAll(".price");
+
+    prices.forEach(price => {
+
+        if (isYearly) {
+            price.textContent = "₹" + price.dataset.year;
+        } else {
+            price.textContent = "₹" + price.dataset.month;
+        }
+
+    });
+
+    monthly.classList.toggle("active", !isYearly);
+    yearly.classList.toggle("active", isYearly);
+}
+
+monthly.onclick = () => changePricing(false);
+yearly.onclick = () => changePricing(true);
+
+</script>
+
+</body>
+</html>
