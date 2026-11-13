@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather Dashboard</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px 15px;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #17365d, #5795c5);
+    color: white;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 38px;
+}
+
+.search {
+    display: flex;
+    gap: 10px;
+    max-width: 500px;
+    margin: 25px auto;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+}
+
+button {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #ffd166;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.weather {
+    background: #ffffff25;
+    padding: 30px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.temperature {
+    font-size: 55px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.icon {
+    font-size: 50px;
+}
+
+.forecast {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.day {
+    background: #ffffff20;
+    padding: 15px 8px;
+    border-radius: 12px;
+}
+
+.status {
+    min-height: 24px;
+}
+
+@media(max-width: 600px) {
+    .forecast {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+<h1>🌤️ Weather Dashboard</h1>
+<p>Check the weather in any city</p>
+
+<form class="search" id="searchForm">
+    <input type="text" id="city"
+    placeholder="Enter city name" value="Salem" required>
+
+    <button type="submit">Search</button>
+</form>
+
+<p class="status" id="status" aria-live="polite"></p>
+
+<section class="weather" id="weather" hidden>
+    <h2 id="cityName"></h2>
+    <div class="icon" id="icon"></div>
+    <div class="temperature" id="temperature"></div>
+    <p id="description"></p>
+    <p id="humidity"></p>
+    <p id="wind"></p>
+</section>
+
+<h2>5-Day Forecast</h2>
+<section class="forecast" id="forecast"></section>
+
+</main>
+
+<script>
+
+const weatherCodes = {
+    0: ["Clear Sky", "☀️"],
+    1: ["Mainly Clear", "🌤️"],
+    2: ["Partly Cloudy", "⛅"],
+    3: ["Cloudy", "☁️"],
+    45: ["Fog", "🌫️"],
+    48: ["Fog", "🌫️"],
+    51: ["Drizzle", "🌦️"],
+    61: ["Rain", "🌧️"],
+    63: ["Rain", "🌧️"],
+    65: ["Heavy Rain", "🌧️"],
+    71: ["Snow", "❄️"],
+    80: ["Rain Showers", "🌦️"],
+    95: ["Thunderstorm", "⛈️"]
+};
+
+async function getWeather(city) {
+
+    const status = document.getElementById("status");
+    const weather = document.getElementById("weather");
+    const forecast = document.getElementById("forecast");
+
+    status.textContent = "Loading weather...";
+    weather.hidden = true;
+    forecast.innerHTML = "";
+
+    try {
+
+        // Get city coordinates
+        const geoResponse = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`
+        );
+
+        if (!geoResponse.ok) {
+            throw new Error("Unable to search for the city.");
+        }
+
+        const geoData = await geoResponse.json();
+
+        if (!geoData.results || geoData.results.length === 0) {
+            throw new Error("City not found!");
+        }
+
+        const location = geoData.results[0];
+
+        // Fetch weather information
+        const response = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5`
+        );
+
+        if (!response.ok) {
+            throw new Error("Weather data unavailable.");
+        }
+
+        const data = await response.json();
+        const current = data.current;
+
+        const info = weatherCodes[current.weather_code]
+            || ["Weather Conditions", "🌡️"];
+
+        document.getElementById("cityName").textContent =
+            location.name + ", " + (location.country || "");
+
+        document.getElementById("icon").textContent = info[1];
+
+        document.getElementById("temperature").textContent =
+            Math.round(current.temperature_2m) + "°C";
+
+        document.getElementById("description").textContent =
+            info[0] + " · Feels like " +
+            Math.round(current.apparent_temperature) + "°C";
+
+        document.getElementById("humidity").textContent =
+            "💧 Humidity: " + current.relative_humidity_2m + "%";
+
+        document.getElementById("wind").textContent =
+            "💨 Wind: " + current.wind_speed_10m + " km/h";
+
+        weather.hidden = false;
+
+        // Display five-day forecast
+        data.daily.time.forEach((date, index) => {
+
+            const day = document.createElement("div");
+            day.className = "day";
+
+            const forecastInfo =
+                weatherCodes[data.daily.weather_code[index]]
+                || ["Weather", "🌡️"];
+
+            const dayName = new Date(date + "T12:00:00")
+                .toLocaleDateString("en", { weekday: "short" });
+
+            day.innerHTML = `
+                <h3>${dayName}</h3>
+                <div class="icon">${forecastInfo[1]}</div>
+                <p>${forecastInfo[0]}</p>
+                <p>${Math.round(data.daily.temperature_2m_max[index])}° /
+                ${Math.round(data.daily.temperature_2m_min[index])}°</p>
+            `;
+
+            forecast.appendChild(day);
+        });
+
+        status.textContent = "Weather updated successfully!";
+
+    } catch (error) {
+
+        status.textContent = error.message;
+    }
+}
+
+document.getElementById("searchForm").addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const city = document.getElementById("city").value.trim();
+
+        if (city) {
+            getWeather(city);
+        }
+    }
+);
+
+// Load default city
+getWeather("Salem");
+
+</script>
+
+</body>
+</html>
+
