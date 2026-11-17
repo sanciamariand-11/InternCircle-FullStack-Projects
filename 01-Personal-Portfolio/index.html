@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sancia | Developer Portfolio</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0b1020;
+    color: white;
+    line-height: 1.6;
+}
+
+header {
+    background: #141d33;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    color: #8bafff;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+    color: #8bafff;
+}
+
+.hero {
+    min-height: 75vh;
+    padding: 70px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.hero h1 {
+    font-size: 55px;
+    margin: 15px 0;
+}
+
+.hero h1 span {
+    color: #8bafff;
+}
+
+.hero p {
+    color: #b8c1d9;
+    max-width: 550px;
+}
+
+.tag {
+    color: #8bafff;
+    letter-spacing: 3px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 25px;
+    background: #789cff;
+    color: #0b1020;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.avatar {
+    font-size: 110px;
+    background: #263d75;
+    padding: 35px;
+    border-radius: 25px;
+}
+
+section {
+    padding: 55px 8%;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #8bafff;
+}
+
+p {
+    color: #b8c1d9;
+}
+
+.skills, .projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: #141d33;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #293653;
+}
+
+.card h3 {
+    color: #8bafff;
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: #141d33;
+    color: #b8c1d9;
+}
+
+  
+#contact a {
+    color: #aebfe6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#contact a:hover {
+    color: #8bafff;
+    text-decoration: underline;
+}
+
+@media(max-width: 700px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 6px;
+        font-size: 13px;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .skills, .projects {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">SANCIA.DEV</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+
+    <div>
+        <div class="tag">ASPIRING SOFTWARE DEVELOPER</div>
+
+        <h1>Hi, I'm <span>Sancia.</span></h1>
+
+        <p>
+            I'm a Computer Science Engineering student
+            passionate about technology, programming
+            and building creative digital experiences.
+        </p>
+
+        <a href="#projects" class="btn">
+            Explore My Work
+        </a>
+    </div>
+
+    <div class="avatar">👩🏻‍💻</div>
+
+</section>
+
+<section id="about">
+    <h2>About Me</h2>
+
+    <p>
+        I'm a curious Computer Science student who enjoys
+        learning new technologies and solving problems.
+        I am currently developing my programming and
+        web development skills and exploring opportunities
+        to grow as a software developer.
+    </p>
+</section>
+
+<section id="skills">
+    <h2>My Skills</h2>
+
+    <div class="skills">
+        <div class="card">Java</div>
+        <div class="card">HTML5</div>
+        <div class="card">CSS3</div>
+        <div class="card">JavaScript</div>
+        <div class="card">Git & GitHub</div>
+        <div class="card">Problem Solving</div>
+    </div>
+</section>
+
+<section id="projects">
+    <h2>My Projects</h2>
+
+    <div class="projects">
+
+        <div class="card">
+            <h3>SANCARE</h3>
+            <p>A mental wellness support website.</p>
+        </div>
+
+        <div class="card">
+            <h3>To-Do Application</h3>
+            <p>A simple task management application.</p>
+        </div>
+
+        <div class="card">
+            <h3>Weather Dashboard</h3>
+            <p>A website displaying weather information.</p>
+        </div>
+
+    </div>
+</section>
+
+
+<section id="contact">
+    <h2>Contact Me</h2>
+
+    <p>
+        Email:
+        <a href="mailto:sanciamarian2007@gmail.com">
+            sanciamarian2007@gmail.com
+        </a>
+    </p>
+
+    <p>
+        <a href="https://github.com/sanciamariand-11"
+           target="_blank" rel="noopener noreferrer">GitHub</a>
+        |
+        <a href="https://www.linkedin.com/in/d-sancia-marian-9209463a8/"
+           target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </p>
+</section>
+
+</main>
+
+<footer>
+    © 2026 Sancia | Personal Developer Portfolio
+</footer>
+
+</body>
+</html>
+
+
+
